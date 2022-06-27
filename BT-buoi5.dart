@@ -60,11 +60,6 @@ abstract class buildweb {}
 
 abstract class buildesktop {}
 
-abstract class remaining {
-  int remain = 0;
-  void Remaining() {}
-}
-
 class HocVien {
   static List<String> hv = [
     'A',
