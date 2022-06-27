@@ -1,109 +1,53 @@
 void main() {
-  var flutter = Flutter();
-  flutter.Remaining();
-  print('================================');
-  var android = Android();
-  android.Remaining();
-  print('================================');
-  var iOS = ios();
-  iOS.Remaining();
-  print('================================');
-  var Web = web();
-  Web.Remaining();
+  List<String> hvFlutter = HocVien.hv.sublist(0, 2);
+  Flutter m = Flutter(TenLop: 'FLutter', slhv: 11, HV: hvFlutter);
+  m.test();
+  m.conlai();
 }
 
-class Flutter
-    implements buildandroid, buildios, buildweb, buildesktop, remaining {
-  final String TenLop = 'Flutter';
-  final int slhv = 11;
-  final List HVFlutter = HocVien.hv.sublist(0, 2);
-  Flutter() {
-    print(TenLop);
-    print(slhv);
-    print(HVFlutter);
+class LopHoc {
+  final String TenLop;
+  final int slhv;
+  final List HV;
+  const LopHoc({required this.TenLop, required this.slhv, required this.HV});
+  void conlai() {
+    print('Số lượng học viên còn lại là: ${slhv.reMain(HV.length, slhv)}');
   }
+}
+
+class Flutter extends LopHoc
+    implements buildandroid, buildios, buildweb, buildesktop {
+  Flutter({required TenLop, required slhv, required HV})
+      : super(TenLop: TenLop, slhv: slhv, HV: HV);
+  void test() {
+    print('Tên lớp: $TenLop');
+    print('Số Lượng học viên: $slhv');
+    print('Thành viên học viên: $HV');
+  }
+
   @override
   void build() {
-    print('hocvien');
-  }
-
-  @override
-  int remain = 0;
-  void Remaining() {
-    var count = HVFlutter.length;
-    if (count < slhv) {
-      remain = slhv - count;
-      print('Số lượng học viên còn thiếu: $remain');
-    }
+    print('test');
   }
 }
 
-class Android implements buildandroid, remaining {
-  final String TenLop = 'Android';
-  final int slhv = 12;
-  List<String> HVAndroid = HocVien.hv.sublist(1, 4);
-  Android() {
-    print(TenLop);
-    print(slhv);
-    print(HVAndroid);
-  }
+class Android extends LopHoc implements buildandroid {
+  Android({required TenLop, required slhv, required HV})
+      : super(TenLop: TenLop, slhv: slhv, HV: HV);
   @override
   void build() {
-    print('hocvien');
-  }
-
-  @override
-  int remain = 0;
-  void Remaining() {
-    var count = HVAndroid.length;
-    if (count < slhv) {
-      remain = slhv - count;
-      print('Số lượng học viên còn thiếu: $remain');
-    }
+    print('test');
   }
 }
 
-class ios implements buildios, remaining {
-  final String TenLop = 'ios';
-  final int slhv = 13;
-  List<String> HVios = HocVien.hv.sublist(3, 6);
-  ios() {
-    print(TenLop);
-    print(slhv);
-    print(HVios);
-  }
-
-  @override
-  int remain = 0;
-  void Remaining() {
-    var count = HVios.length;
-    if (count < slhv) {
-      remain = slhv - count;
-      print('Số lượng học viên còn thiếu: $remain');
-    }
-  }
+class ios extends LopHoc implements buildios {
+  ios({required TenLop, required slhv, required HV})
+      : super(TenLop: TenLop, slhv: slhv, HV: HV);
 }
 
-class web implements buildweb, remaining {
-  final String TenLop = 'web';
-  final int slhv = 14;
-  List<String> HVweb = HocVien.hv.sublist(5, 6);
-  web() {
-    print(TenLop);
-    print(slhv);
-    print(HVweb);
-  }
-
-  @override
-  int remain = 0;
-  void Remaining() {
-    var count = HVweb.length;
-    if (count < slhv) {
-      remain = slhv - count;
-      print('Số lượng học viên còn thiếu: $remain');
-      // var randomItem = (HocVien.hv..shuffle()).first;
-    }
-  }
+class web extends LopHoc implements buildweb {
+  web({required TenLop, required slhv, required HV})
+      : super(TenLop: TenLop, slhv: slhv, HV: HV);
 }
 
 abstract class buildandroid {
@@ -139,4 +83,11 @@ class HocVien {
     'M',
     'O'
   ];
+}
+
+extension re on int {
+  num reMain(int a, b) {
+    if (a < b) ;
+    return b - a;
+  }
 }
