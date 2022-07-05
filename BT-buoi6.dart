@@ -1,117 +1,180 @@
+import 'dart:math';
+
 void main() {
-  List<String> hvFlutter = HocVien.hv.sublist(0, 2);
-  Flutter m = Flutter(TenLop: 'FLutter', slhv: 11, HV: hvFlutter);
-  m.test();
-  m.conlai();
-  m.AddMember();
-  print('=====================');
-  List<String> hvAndroid = HocVien.hv.sublist(1, 4);
-  Android n = Android(TenLop: 'Android', slhv: 12, HV: hvAndroid);
-  n.test();
-  n.conlai();
-  print('=====================');
-  List<String> hvios = HocVien.hv.sublist(3, 6);
-  ios o = ios(TenLop: 'ios', slhv: 13, HV: hvios);
-  o.test();
-  o.conlai();
-  print('=====================');
-  List<String> hvweb = HocVien.hv.sublist(5, 6);
-  web p = web(TenLop: 'web', slhv: 14, HV: hvweb);
-  p.test();
-  p.conlai();
+  Flutter flutter =
+      Flutter(className: 'Flutter', studentNumber: 11, studentList: ['A', 'B']);
+  flutter.ShowInformation();
+  flutter.Remaining();
+  print('=======================');
+  Android android = Android(
+      className: 'Android', studentNumber: 12, studentList: ['B', 'C', 'D']);
+  android.ShowInformation();
+  android.Remaining();
+  print('=======================');
+  iOS ios =
+      iOS(className: 'ios', studentNumber: 13, studentList: ['D', 'E', 'F']);
+  ios.ShowInformation();
+  ios.Remaining();
+  print('=======================');
+  Web web = Web(className: 'web', studentNumber: 14, studentList: ['F']);
+  web.ShowInformation();
+  web.Remaining();
 }
 
-class LopHoc {
-  final String TenLop;
-  final int slhv;
-  final List HV;
-  const LopHoc({required this.TenLop, required this.slhv, required this.HV});
-  void test() {
-    print('Tên lớp: $TenLop');
-    print('Số Lượng học viên: $slhv');
-    print('Thành viên học viên: $HV');
+class ClassInformation {
+  final String className;
+  final int studentNumber;
+  final List<String> studentList;
+  int _numberofSession = 10;
+  ClassInformation(
+      {required this.className,
+      required this.studentNumber,
+      required this.studentList});
+  void ShowInformation() {
+    print('Class name: $className');
+    print('Student number: $studentNumber');
+    print('Student list: $studentList');
   }
 
-  void conlai() {
-    print('Số lượng học viên còn lại là: ${slhv.reMain(HV.length, slhv)}');
-  }
-
-  void AddMember() {
-    while (HV.length < slhv) {
-      HV.AddRdName();
-      if (HV.contains(HV[HV.length - 1]) == true) {
-        HV.removeLast();
-      }
+  void Remaining() {
+    if (studentList.length < studentNumber) {
+      int remain = studentNumber - studentList.length;
+      print('Số lượng học viên còn lại là: $remain');
     }
-    print(HV);
   }
+
+  dynamic addMoreStudent(int remain, ClassInformation studentList) {
+    for (int i = 0; i < remain; i++) {
+      int rd = Random().nextInt(25);
+      String char = String.fromCharCode(rd + 65);
+      while (studentList.studentList.contains(char)) {
+        rd = Random().nextInt(25);
+        char = String.fromCharCode(rd + 65);
+      }
+      studentList.addStudent(char);
+    }
+    print(studentList);
+  }
+
+  void addStudent(String char) {
+    studentList.add(char);
+  }
+
+  set numberofSession(int value) {
+    assert(value > 10, "Số buổi học không thể < 10");
+
+    _numberofSession = value;
+
+    ClassInfoChecker().updateSoBuoiHocByClassInfo(this);
+  }
+
+  int get numberofSession => _numberofSession;
 }
 
-class Flutter extends LopHoc
+class Flutter extends ClassInformation
     with buildandroid, buildios, buildweb, buildesktop {
-  Flutter({required TenLop, required slhv, required HV})
-      : super(TenLop: TenLop, slhv: slhv, HV: HV);
+  Flutter({required className, required studentNumber, required studentList})
+      : super(
+            className: className,
+            studentNumber: studentNumber,
+            studentList: studentList);
   @override
   void build() {
-    print('Chưa có gì cả');
+    print('test');
   }
 }
 
-class Android extends LopHoc with buildandroid {
-  Android({required TenLop, required slhv, required HV})
-      : super(TenLop: TenLop, slhv: slhv, HV: HV);
+class Android extends ClassInformation with buildandroid {
+  Android({required className, required studentNumber, required studentList})
+      : super(
+            className: className,
+            studentNumber: studentNumber,
+            studentList: studentList);
 }
 
-class ios extends LopHoc with buildios {
-  ios({required TenLop, required slhv, required HV})
-      : super(TenLop: TenLop, slhv: slhv, HV: HV);
+class iOS extends ClassInformation with buildios {
+  iOS({required className, required studentNumber, required studentList})
+      : super(
+            className: className,
+            studentNumber: studentNumber,
+            studentList: studentList);
 }
 
-class web extends LopHoc with buildweb {
-  web({required TenLop, required slhv, required HV})
-      : super(TenLop: TenLop, slhv: slhv, HV: HV);
+class Web extends ClassInformation with buildweb {
+  Web({required className, required studentNumber, required studentList})
+      : super(
+            className: className,
+            studentNumber: studentNumber,
+            studentList: studentList);
 }
 
 mixin buildandroid {
   void build() {}
 }
-
 mixin buildios {}
-
 mixin buildweb {}
-
 mixin buildesktop {}
 
-class HocVien {
-  static List<String> hv = [
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'N',
-    'M',
-    'O'
-  ];
-}
+const sbhAndroidInterval = 5;
+const sbhIosInterval = 3;
+const sbhWebInterval = 2;
 
-extension re on int {
-  num reMain(int a, b) {
-    if (a < b) ;
-    return b - a;
+class ClassInfoChecker {
+  static final ClassInfoChecker _instance = ClassInfoChecker._internal();
+  ClassInfoChecker._internal();
+  factory ClassInfoChecker() => _instance;
+  final List<ClassInformation> _classInfoArr = [];
+
+  bool isUpdatingSBH = false;
+
+  void updateSoBuoiHocByClassInfo(ClassInformation ClassInformation) {
+    if (_classInfoArr.isEmpty) return;
+
+    if (isUpdatingSBH) return;
+
+    isUpdatingSBH = true;
+
+    final int _rootSBH = _flutterSBH(ClassInformation);
+
+    _classInfoArr.whereType<Flutter>().first.numberofSession = _rootSBH;
+    _classInfoArr.whereType<Android>().first.numberofSession =
+        _rootSBH + sbhAndroidInterval;
+    _classInfoArr.whereType<iOS>().first.numberofSession =
+        _rootSBH + sbhIosInterval;
+    _classInfoArr.whereType<Web>().first.numberofSession =
+        _rootSBH + sbhWebInterval;
+    isUpdatingSBH = false;
   }
-}
 
-extension AddRandomName on List {
-  void AddRdName() {
-    var randomItem = (HocVien.hv.toList()..shuffle()).first;
-    this..add(randomItem);
+  void add(ClassInformation classInformation) {
+    if (_classInfoArr.contains(classInformation)) return;
+
+    _classInfoArr.add(classInformation);
+  }
+
+  int _flutterSBH(ClassInformation classInformation) {
+    int _flutterSBH = 0;
+
+    if (classInformation is Flutter) {
+      _flutterSBH = classInformation.numberofSession;
+    } else if (classInformation is Android) {
+      _flutterSBH = classInformation.numberofSession - sbhAndroidInterval;
+    } else if (classInformation is iOS) {
+      _flutterSBH = classInformation.numberofSession - sbhIosInterval;
+    } else if (classInformation is Web) {
+      _flutterSBH = classInformation.numberofSession + sbhWebInterval;
+    }
+
+    return _flutterSBH;
+  }
+
+  @override
+  String toString() {
+    String ret = "";
+    for (var element in _classInfoArr) {
+      ret += "${element.className}: ${element.numberofSession}, ";
+    }
+
+    return ret;
   }
 }
